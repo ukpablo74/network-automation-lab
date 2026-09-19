@@ -1,0 +1,13 @@
+all:
+  children:
+    srl:
+      hosts:
+        clab-first-r1:
+        clab-first-r2:
+      vars:
+        ansible_connection: ansible.netcommon.httpapi
+        ansible_network_os: nokia.srlinux.srlinux
+        ansible_user: admin
+        ansible_password: "NokiaSrl1!"
+        ansible_httpapi_use_ssl: true
+        ansible_httpapi_validate_certs: false

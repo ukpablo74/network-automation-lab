@@ -1,0 +1,21 @@
+- name: Configure the link between the routers
+  hosts: srl
+  gather_facts: false
+  tasks:
+    - name: Enable ethernet-1/1 and set its IP address
+      nokia.srlinux.config:
+        update:
+          - path: /interface[name=ethernet-1/1]
+            value:
+              admin-state: enable
+              subinterface:
+                - index: 0
+                  admin-state: enable
+                  ipv4:
+                    admin-state: enable
+                    address:
+                      - ip-prefix: "{{ interface_ip }}"
+          - path: /network-instance[name=default]
+            value:
+              interface:
+                - name: ethernet-1/1.0

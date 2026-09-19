@@ -1,0 +1,27 @@
+- name: Back up router configs
+  hosts: srl
+  gather_facts: false
+  vars:
+    backup_dir: "{{ playbook_dir }}/../backups"
+  tasks:
+    - name: Get the running config
+      nokia.srlinux.get:
+        paths:
+          - path: /
+            datastore: running
+      register: running_config
+
+    - name: Make sure the backup folder exists
+      ansible.builtin.file:
+        path: "{{ backup_dir }}"
+        state: directory
+        mode: "0755"
+      delegate_to: localhost
+      run_once: true
+
+    - name: Save the config to a file
+      ansible.builtin.copy:
+        content: "{{ running_config.result | to_nice_json }}\n"
+        dest: "{{ backup_dir }}/{{ inventory_hostname }}.json"
+        mode: "0644"
+      delegate_to: localhost

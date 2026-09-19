@@ -1,0 +1,35 @@
+---
+- name: Set up a simple web server
+  hosts: pi
+  become: true
+
+  vars:
+    site_message: "Hello Mr Potato, from my Raspberry Pi 5, managed by Ansible!"
+
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: true
+
+    - name: Create a custom homepage
+      copy:
+        content: "<h1>{{ site_message }}</h1>\n"
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+      notify: Restart nginx
+
+    - name: Make sure nginx is running and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted

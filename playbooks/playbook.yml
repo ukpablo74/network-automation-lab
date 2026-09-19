@@ -1,0 +1,22 @@
+---
+- name: My first playbook
+  hosts: pi
+  become: true
+
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: true
+
+    - name: Install htop
+      apt:
+        name: htop
+        state: present
+
+    - name: Create a test file to prove the playbook ran
+      copy:
+        content: "Ansible was here!....You are No1\n"
+        dest: /home/ukpablo/ansible_test.txt
+        owner: ukpablo
+        group: ukpablo
+        mode: '0644'

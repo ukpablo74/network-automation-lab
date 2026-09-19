@@ -1,0 +1,11 @@
+name: first
+topology:
+  nodes:
+    r1:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux
+    r2:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux
+  links:
+    - endpoints: ["r1:e1-1", "r2:e1-1"]

@@ -1,0 +1,21 @@
+- name: First SR Linux playbook
+  hosts: srl
+  gather_facts: false
+  tasks:
+    - name: Read system info
+      nokia.srlinux.get:
+        paths:
+          - path: /system/information
+            datastore: state
+      register: info
+
+    - name: Show it
+      ansible.builtin.debug:
+        var: info.result
+
+    - name: Set the location
+      nokia.srlinux.config:
+        update:
+          - path: /system/information
+            value:
+              location: "Home lab"
